@@ -1,1 +1,27 @@
-import numpy as np
+from IPython.display import display
+
+train = pd.read_csv('./8010train.csv')
+test = pd.read_csv('./8010test.csv')
+
+train.head(10)
+train.head(10)
+train.tail(10)
+train.tail(10)
+
+print(train.shape)
+print(train.shape)
+
+train.describe(include=['0'])
+test.descrige(include=['0'])
+
+train.describe()
+test.describe()
+
+train.describe(include='all')
+test.describe(include='all')
+
+train.isnull().sum()
+test.isnull().sum()
+
+train['Age'] = train['Age'].fillna(train['Age'].median())
+train['Embarked'] = train['Embarked'].fillna('S')
