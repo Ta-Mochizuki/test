@@ -1,27 +1,63 @@
-from IPython.display import display
+import os
+import cv2
+import numpy as np
+from keras.utils.np_utils import to_categorical
+from keras.layers import Dense, Dropout, Flatten, Input
+from keras.applications.vgg16 import VGG16
+from keras.models import Model, Sequential
+from keras import optimizers
 
-train = pd.read_csv('./8010train.csv')
-test = pd.read_csv('./8010test.csv')
+path_apples = #りんごのデータをkaggleよりダウンロード
+path_oranges = #オレンジのデータをkaggleよりダウンロード
 
-train.head(10)
-train.head(10)
-train.tail(10)
-train.tail(10)
+img_apples = []
+img_oranges = []
 
-print(train.shape)
-print(train.shape)
+for i in range(len(path_apples)):
+  img = #
+  img = cv2.resize(img, (50, 50))
+  img_apples.append(img)
+  
+for i in range(len(path_oranges)):
+  img = #
+  img = cv2.resize(img, (50, 50)
+  img_orages.append(img)
+  
+X = np.array(img_apples + img_oranges)
+y = np.array([0]*len(img_apples) + [1]*len(img_oranges))
 
-train.describe(include=['0'])
-test.descrige(include=['0'])
+rand_index = np.random.permutation(np.arange(len(X)))
+X = X[rand_index]
+y = y[rand_index]
 
-train.describe()
-test.describe()
+X_train = X[:int(len(X)*0.8)]
+y_train = y[:int(len(y)* 0.8]
+X_test = X[int(len(y)*0,8):]
+y_test = y[int(len(y)*0.8:]
 
-train.describe(include='all')
-test.describe(include='all')
+y_train = to_categorical(y_train)
+y_test = to_categorical(y_test)
 
-train.isnull().sum()
-test.isnull().sum()
+input_tensor = Input(shape=(50, 50, 3))
 
-train['Age'] = train['Age'].fillna(train['Age'].median())
-train['Embarked'] = train['Embarked'].fillna('S')
+vgg16 = VGG16(include_top=False, weights='imagenet', input_tensor=input_tensor)
+
+top_model = Sequential()
+top_model.add(Flatten(input_shape=vgg16.output_shape[1:]))
+top_model.add(Dense(256, activation='relu))
+top_model.add(dropout(0.5))
+top_model.add(Dense(2, activation='softmax'))
+
+model = Model(inputs=vgg16.input, outputs=top_model(vgg16.output))
+
+for layer in model.layers[:15]:
+  layer.trainabl = False
+  
+model.compile(loss='categorical_crossentropy', optimizer=optimizers.RMSprop(lr=2e-5), metrics=['accuracy'])
+
+model.fit(X_train, y_train, epochs=5)
+
+scores = model.evaluate(X_test, y_test, verbose=1)
+print = modle.evaluate(X_test, y_test, verbose=1)
+print('Test loss.', scores[0])
+print('Test accuracy:', scores[1])
