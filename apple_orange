@@ -7,19 +7,19 @@ from keras.applications.vgg16 import VGG16
 from keras.models import Model, Sequential
 from keras import optimizers
 
-path_apples = #りんごのデータをkaggleよりダウンロード
-path_oranges = #オレンジのデータをkaggleよりダウンロード
+path_apples = os.listdir('./fruits_data/freshapples/')
+path_oranges = os.listdir('./fruits_data/freshoranges/')
 
 img_apples = []
 img_oranges = []
 
 for i in range(len(path_apples)):
-  img = #
+  img = cv2.imread('./fruits_data/freshapples/' + path_apples[i])
   img = cv2.resize(img, (50, 50))
   img_apples.append(img)
   
 for i in range(len(path_oranges)):
-  img = #
+  img = cv2.imread('./fruits_data/freshoranges/' + path_oranges[i])
   img = cv2.resize(img, (50, 50)
   img_orages.append(img)
   
@@ -58,6 +58,5 @@ model.compile(loss='categorical_crossentropy', optimizer=optimizers.RMSprop(lr=2
 model.fit(X_train, y_train, epochs=5)
 
 scores = model.evaluate(X_test, y_test, verbose=1)
-print = modle.evaluate(X_test, y_test, verbose=1)
 print('Test loss.', scores[0])
 print('Test accuracy:', scores[1])
